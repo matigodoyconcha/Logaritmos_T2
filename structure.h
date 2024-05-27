@@ -18,11 +18,11 @@ class Estructura{
     public:
         Node raiz;
 
-        void push(NodoDist); //Lo inserta como un array!
-        void heapify(); //Lo convierte en una Cola de Prioridad!
-        int empty(); //Dice si ta vacio o no!
-        NodoDist pop();
-        void decreaseKey(ull nodo,double newDistance);
+        virtual void push(NodoDist); //Lo inserta como un array!
+        virtual void heapify(); //Lo convierte en una Cola de Prioridad!
+        virtual int empty(); //Dice si ta vacio o no!
+        virtual NodoDist pop();
+        virtual void decreaseKey(ull nodo,double newDistance);
 };
 
 #endif
