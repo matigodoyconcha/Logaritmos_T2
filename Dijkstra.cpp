@@ -13,7 +13,9 @@ tuple<vector<double>,vector<ull>> Dijkstra(ull V ,vector<vector<NodoDist>> Arist
     vector<ull> previos(V);
 
     // Paso 3
-    int nodo_previo = -1; //(Id nodo previo de la raiz)
+    ull nodo_previo = -1; //(Id nodo previo de la raiz)
+    previos[raiz] = nodo_previo;
+    distancias[raiz]= 0;
     NodoDist tupla = {0,raiz};
     Q.push(tupla);
 
