@@ -13,21 +13,23 @@ tuple<vector<double>,vector<ull>> Dijkstra(ull V ,vector<vector<NodoDist>> Arist
     vector<ull> previos(V);
 
     // Paso 3
-    int nodo_previo = -1; //(Id nodo previo de la raiz)
-    NodoDist tupla = {0,raiz};
+    ull nodo_previo = raiz; //(Id nodo previo de la raiz)
+    previos[raiz] = nodo_previo;
+    distancias[raiz]= 0;
+    NodoDist tupla = {raiz,0.0};
     Q.push(tupla);
 
     // Paso 4
     //Iteramos hasta uno antes de la raiz
     for(ull i = 0; i< raiz; i++){
-        distancias[i] = LLONG_MAX;
-        NodoDist tupla = {LLONG_MAX,i};
+        distancias[i] = numeric_limits<double>::max();
+        NodoDist tupla = {i,numeric_limits<double>::max()};
         Q.push(tupla);
     }
     // Iteramos desde la raiz (sin incluirla) hasta V
     for(ull i = raiz+1;i< V;i++ ){
-        distancias[i] = LLONG_MAX;
-        NodoDist tupla = {LLONG_MAX,i};
+        distancias[i] = numeric_limits<double>::max();
+        NodoDist tupla = {i,numeric_limits<double>::max()};
         Q.push(tupla);
     }
 

@@ -1,8 +1,8 @@
 #include <tuple>
 typedef long long ull;
 
-#ifndef STRUCTURES_H
-#define STRUCTURES_H
+#ifndef STRUCTURE_H
+#define STRUCTURE_H
 
 class Node{
     ull id;
