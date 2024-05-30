@@ -20,14 +20,14 @@ tuple<vector<double>,vector<ull>> Dijkstra(ull V ,vector<vector<NodoDist>> Arist
     // Paso 4
     //Iteramos hasta uno antes de la raiz
     for(ull i = 0; i< raiz; i++){
-        distancias[i] = ULLONG_MAX;
-        NodoDist tupla = {ULLONG_MAX,i};
+        distancias[i] = LLONG_MAX;
+        NodoDist tupla = {LLONG_MAX,i};
         Q.push(tupla);
     }
     // Iteramos desde la raiz (sin incluirla) hasta V
     for(ull i = raiz+1;i< V;i++ ){
-        distancias[i] = ULLONG_MAX;
-        NodoDist tupla = {ULLONG_MAX,i};
+        distancias[i] = LLONG_MAX;
+        NodoDist tupla = {LLONG_MAX,i};
         Q.push(tupla);
     }
 
