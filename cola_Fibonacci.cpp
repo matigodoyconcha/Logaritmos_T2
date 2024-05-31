@@ -97,6 +97,7 @@ class cola_fibonacci : public Estructura{
                     }
                     for (int i = 0; i < children.size(); i++){
                         insertInHeap(children[i]);
+                        children[i]->parent = NULL;
                     }
                 }
                 erase(z);
@@ -110,7 +111,6 @@ class cola_fibonacci : public Estructura{
                 n--;
             }
             NodoDist temp = z->data;
-            delete z;
             return temp;
         }
 
@@ -118,15 +118,15 @@ class cola_fibonacci : public Estructura{
         void consolidate(){
             vector<node*> A(n, NULL);
             node *x = min;
-            vector <node *> nodes;
-            nodes.push_back(x);
+            vector <node *> newHeap;
+            newHeap.push_back(x);
             x = x->next;
             while (x != min){
-                nodes.push_back(x);
+                newHeap.push_back(x);
                 x = x->next;
             }
-            for (int i = 0; i < nodes.size(); i++){
-                x = nodes[i];
+            for (int i = 0; i < newHeap.size(); i++){
+                x = newHeap[i];
                 int d = x->degree;
                 while (A[d] != NULL){
                     node *y = A[d];
