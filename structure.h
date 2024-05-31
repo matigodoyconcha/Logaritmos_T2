@@ -4,9 +4,6 @@ typedef long long ull;
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
 
-class Node{
-    ull id;
-};
 
 class NodoDist{
     public:
@@ -16,7 +13,6 @@ class NodoDist{
 
 class Estructura{
     public:
-        Node raiz;
 
         virtual void push(NodoDist tupla) = 0; //Lo inserta como un array!
         virtual void heapify()=0; //Lo convierte en una Cola de Prioridad!

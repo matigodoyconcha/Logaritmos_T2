@@ -33,7 +33,7 @@ class cola_fibonacci : public Estructura{
         vector<node *> nodes;
         node *min = NULL;
         int n = 0;
-        Node raiz;
+        node raiz;
 
         // Push a node into an array waiting to be inserted into the fibonacci heap
         void push(NodoDist nodo) override {
