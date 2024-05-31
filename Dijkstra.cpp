@@ -5,8 +5,6 @@
 
 using namespace std;
 
-typedef unsigned long long ull;
-
 tuple<vector<double>,vector<ull>> Dijkstra(ull V ,vector<vector<NodoDist>> Aristas,Estructura &Q, ull raiz){
     // Paso 1
     vector<double> distancias(V);
