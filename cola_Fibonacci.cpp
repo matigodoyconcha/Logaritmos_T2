@@ -116,7 +116,9 @@ class cola_fibonacci : public Estructura{
 
         // Consolidate the fibonacci heap to just have one heap with each degree
         void consolidate(){
-            vector<node*> A(n, NULL);
+            double phi = (1 + sqrt(5)) / 2;
+            int top = ceil(log(n) / log(phi));
+            vector<node*> A(top, NULL);
             node *x = min;
             vector <node *> newHeap;
             newHeap.push_back(x);
@@ -142,7 +144,7 @@ class cola_fibonacci : public Estructura{
                 A[d] = x;
             }
             min = NULL;
-            for (int i = 0; i < n; i++){
+            for (int i = 0; i < top; i++){
                 if (A[i] != NULL){
                     if (min == NULL){
                         min = A[i];
