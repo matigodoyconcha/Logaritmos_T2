@@ -14,7 +14,7 @@ void Heap_Test(vector<vector<NodoDist>>& graph, int i, int j, const string& file
     ofstream outfile("Testing/"+ filename, ios::app);
     Estructura *heap = new Heap();
     auto start = high_resolution_clock::now();
-    tuple<vector<double>, vector<ull>> res = Dijkstra(graph.size(), graph, *heap, 0);
+    tuple<vector<double>, vector<ull>> res = Dijkstra(pow(2,i), graph, *heap, 0);
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(end - start).count();
     outfile << "Heap Test "  << ": " << duration << " microseconds" << endl;
@@ -27,7 +27,7 @@ void Fibonacci_Test(vector<vector<NodoDist>>& graph, int i, int j, const string&
     ofstream outfile("Testing/"+ filename, ios::app);
     Estructura *cola = new cola_fibonacci();
     auto start = high_resolution_clock::now();
-    tuple<vector<double>, vector<ull>> res = Dijkstra(graph.size(), graph, *cola, 0);
+    tuple<vector<double>, vector<ull>> res = Dijkstra(pow(2,i), graph, *cola, 0);
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(end - start).count();
     outfile << "Cola Fibonacci Test " << ": " << duration << " microseconds" << endl;

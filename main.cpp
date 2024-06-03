@@ -10,10 +10,10 @@ int main(){
                 break;
             }
             for(int k = 0; k < 50; k++){
-                vector<vector<NodoDist>> graph = graphGen(10, 16);
+                vector<vector<NodoDist>> graph = graphGen(i, j);
                 //cout << "Grafo generado" << endl;
-                string h = "Test_Heap " + to_string(i) + "," + to_string(j);
-                string f = "Test_Fibonacci " + to_string(i)+ "," + to_string(j);
+                string h = "Test_Heap " + to_string(i) + "," + to_string(j)+".txt";
+                string f = "Test_Fibonacci " + to_string(i)+ "," + to_string(j)+".txt";
                 Heap_Test(graph,i,j,h);
                 Fibonacci_Test(graph,i,j,f);
                 //cout << "Dijkstra ejecutado" << endl;
