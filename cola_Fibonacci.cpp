@@ -86,20 +86,13 @@ class cola_fibonacci : public Estructura{
         NodoDist pop() override{
             node *z = min;
             if (z != NULL){
-                if (z->child != NULL){
-                    vector<node *> children;
-                    node *temp = z->child;
-                    children.push_back(temp);
-                    temp = temp->next;
-                    while (temp!= z->child){
-                        children.push_back(temp);
-                        temp = temp->next;
+                node * x = z->child;
+                    for (int i = 0; i <z->degree; i++){
+                        node * temp = x->next;
+                        insertInHeap(x);
+                        x->parent = NULL;
+                        x = temp;
                     }
-                    for (int i = 0; i < children.size(); i++){
-                        insertInHeap(children[i]);
-                        children[i]->parent = NULL;
-                    }
-                }
                 erase(z);
                 if (z == z->next){
                     min = NULL;
@@ -111,24 +104,27 @@ class cola_fibonacci : public Estructura{
                 n--;
             }
             NodoDist temp = z->data;
+            delete z;
             return temp;
         }
 
         // Consolidate the fibonacci heap to just have one heap with each degree
         void consolidate(){
             double phi = (1 + sqrt(5)) / 2;
-            int top = ceil(log(n) / log(phi));
+            int top = ceil(log(n) / log(phi))+ 1;
             vector<node*> A(top, NULL);
             node *x = min;
-            vector <node *> newHeap;
-            newHeap.push_back(x);
-            x = x->next;
-            while (x != min){
-                newHeap.push_back(x);
-                x = x->next;
+            int InHeap = 1;
+            node *toCount = x;
+            while (toCount->next != x){
+                toCount = toCount->next;
+                InHeap++;
             }
-            for (int i = 0; i < newHeap.size(); i++){
-                x = newHeap[i];
+            node *next = x->next;
+            A[x->degree] = x;
+            x = next;
+            for (int i = 1; i < InHeap; i++){
+                node *next = x->next;
                 int d = x->degree;
                 while (A[d] != NULL){
                     node *y = A[d];
@@ -142,6 +138,7 @@ class cola_fibonacci : public Estructura{
                     d++;
                 }
                 A[d] = x;
+                x = next;
             }
             min = NULL;
             for (int i = 0; i < top; i++){
@@ -181,13 +178,13 @@ class cola_fibonacci : public Estructura{
         // Convert the array into a fibonacci heap
         void heapify() override{
             nodes.resize(heap.size()+1);
+            n = heap.size();
             for (int i = 0; i < heap.size(); i++){
                 node *temp = new node();
                 temp->key = heap[i].weight;
                 temp->data = heap[i];
                 nodes[temp->data.neighbor] = temp;
                 insertInHeap(temp);
-                n++;
             }
         }
 
