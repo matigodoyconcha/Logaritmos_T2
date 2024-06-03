@@ -1,0 +1,8 @@
+Cola Fibonacci Test : 1482088 microseconds
+Cola Fibonacci Test : 1591648 microseconds
+Cola Fibonacci Test : 1503788 microseconds
+Cola Fibonacci Test : 1519650 microseconds
+Cola Fibonacci Test : 1459995 microseconds
+Cola Fibonacci Test : 1532619 microseconds
+Cola Fibonacci Test : 1603433 microseconds
+Cola Fibonacci Test : 1560379 microseconds
