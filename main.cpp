@@ -19,7 +19,7 @@ void coutMean(const string& filename){
 
 int main(){
     ofstream outfile("Testing/Promedios.txt");
-    outfile << "Archivo;Promedio" << endl;
+    outfile << "Estructura;i;j;Promedio" << endl;
     outfile.close();
     for (int i = 10; i <15 ; i+=2){
         for(int j = 16 ; j<22 ;j++){
