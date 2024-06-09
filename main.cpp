@@ -37,7 +37,9 @@ int main(){
             for(int k = 0; k < 50; k++){
                 vector<vector<NodoDist>> graph = graphGen(i, j);
                 //cout << "Grafo generado" << endl;
+                //cout << "Fibonacci" << endl;
                 Fibonacci_Test(graph,i,j,f);
+                //cout << "Heap" << endl;
                 Heap_Test(graph,i,j,h);
                 //cout << "Dijkstra ejecutado" << endl;
             }

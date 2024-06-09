@@ -14,11 +14,11 @@ class node{
 
 // Insert a node into a double linked list
 void insert(node *listToInsert, node *nodeToInsert){
-    node *temp = listToInsert->next;
-    nodeToInsert->prev = listToInsert;
-    nodeToInsert->next = temp;
-    listToInsert->next = nodeToInsert;
-    temp->prev = nodeToInsert;
+    node *temp = listToInsert->prev;
+    nodeToInsert->next = listToInsert;
+    nodeToInsert->prev = temp;
+    listToInsert->prev = nodeToInsert;
+    temp->next = nodeToInsert;
 }
 
 // Erase a node from his double linked list
@@ -29,7 +29,7 @@ void erase(node *nodeToEliminate){
 
 class cola_fibonacci : public Estructura{
     public:
-        vector<NodoDist> heap;
+        vector<node *> heap;
         vector<node *> nodes;
         node *min = NULL;
         int n = 0;
@@ -37,7 +37,12 @@ class cola_fibonacci : public Estructura{
 
         // Push a node into an array waiting to be inserted into the fibonacci heap
         void push(NodoDist nodo) override {
-            heap.push_back(nodo);
+            node *temp = (node *)malloc(sizeof(node));
+            *temp = node();
+            temp->key = nodo.weight;
+            temp->data = nodo;
+            heap.push_back(temp);
+            n++;
         }
 
         // Insert a node into the fibonacci heap
@@ -85,10 +90,11 @@ class cola_fibonacci : public Estructura{
         // Returns the minimum node of the heap
         NodoDist pop() override{
             node *z = min;
+            node *temp, *x;
             if (z != NULL){
-                node * x = z->child;
+                x = z->child;
                     for (int i = 0; i <z->degree; i++){
-                        node * temp = x->next;
+                        temp = x->next;
                         insertInHeap(x);
                         x->parent = NULL;
                         x = temp;
@@ -103,33 +109,34 @@ class cola_fibonacci : public Estructura{
                 }
                 n--;
             }
-            NodoDist temp = z->data;
-            delete z;
-            return temp;
+            NodoDist toReturn = z->data;
+            free(z);
+            return toReturn;
         }
 
         // Consolidate the fibonacci heap to just have one heap with each degree
         void consolidate(){
             double phi = (1 + sqrt(5)) / 2;
-            int top = ceil(log(n) / log(phi))+ 1;
+            int top = log(n)/log(phi);
             vector<node*> A(top, NULL);
             node *x = min;
+            node *next;
+            node *y;
+            node *temp;
+            int d;
             int InHeap = 1;
-            node *toCount = x;
-            while (toCount->next != x){
-                toCount = toCount->next;
+            node *toCount = x->next;
+            while (toCount != x){
                 InHeap++;
+                toCount = toCount->next;
             }
-            node *next = x->next;
-            A[x->degree] = x;
-            x = next;
-            for (int i = 1; i < InHeap; i++){
-                node *next = x->next;
-                int d = x->degree;
+            for (int i = 0; i < InHeap; i++){
+                next = x->next;
+                d = x->degree;
                 while (A[d] != NULL){
-                    node *y = A[d];
+                    y = A[d];
                     if (x->key > y->key){
-                        node *temp = x;
+                        temp = x;
                         x = y;
                         y = temp;
                     }
@@ -177,12 +184,10 @@ class cola_fibonacci : public Estructura{
 
         // Convert the array into a fibonacci heap
         void heapify() override{
-            nodes.resize(heap.size()+1);
-            n = heap.size();
-            for (int i = 0; i < heap.size(); i++){
-                node *temp = new node();
-                temp->key = heap[i].weight;
-                temp->data = heap[i];
+            nodes.resize(n);
+            node *temp;
+            for (int i = 0; i < n; i++){
+                temp = heap[i];
                 nodes[temp->data.neighbor] = temp;
                 insertInHeap(temp);
             }

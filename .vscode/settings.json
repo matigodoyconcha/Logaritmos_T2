@@ -12,6 +12,7 @@
         "unordered_set": "cpp",
         "limits": "cpp",
         "new": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "fstream": "cpp"
     }
 }

@@ -1,9 +1,0 @@
-Heap Test : 1627057 microseconds
-Heap Test : 1333925 microseconds
-Heap Test : 1354169 microseconds
-Heap Test : 1328791 microseconds
-Heap Test : 1257232 microseconds
-Heap Test : 1337827 microseconds
-Heap Test : 1359464 microseconds
-Heap Test : 1346173 microseconds
-Heap Test : 1509063 microseconds
