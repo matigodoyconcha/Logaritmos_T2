@@ -29,19 +29,16 @@ void erase(node *nodeToEliminate){
 
 class cola_fibonacci : public Estructura{
     public:
-        vector<node *> heap;
+        vector<NodoDist> heap;
         vector<node *> nodes;
         node *min = NULL;
         int n = 0;
         node raiz;
+        node *toFree;
 
         // Push a node into an array waiting to be inserted into the fibonacci heap
         void push(NodoDist nodo) override {
-            node *temp = (node *)malloc(sizeof(node));
-            *temp = node();
-            temp->key = nodo.weight;
-            temp->data = nodo;
-            heap.push_back(temp);
+            heap.push_back(nodo);
             n++;
         }
 
@@ -110,7 +107,6 @@ class cola_fibonacci : public Estructura{
                 n--;
             }
             NodoDist toReturn = z->data;
-            free(z);
             return toReturn;
         }
 
@@ -185,11 +181,14 @@ class cola_fibonacci : public Estructura{
         // Convert the array into a fibonacci heap
         void heapify() override{
             nodes.resize(n);
-            node *temp;
+            node *locura = new node[n];
+            toFree = locura;
             for (int i = 0; i < n; i++){
-                temp = heap[i];
-                nodes[temp->data.neighbor] = temp;
-                insertInHeap(temp);
+                locura[i] = node();
+                locura[i].key = heap[i].weight;
+                locura[i].data = heap[i];
+                nodes[heap[i].neighbor] = locura;
+                insertInHeap(&locura[i]);
             }
         }
 
