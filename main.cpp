@@ -22,7 +22,7 @@ int main(){
     outfile << "Estructura;i;j;Promedio" << endl;
     outfile.close();
     for (int i = 10; i <15 ; i+=2){
-        for(int j = 16 ; j<22 ;j++){
+        for(int j = 16 ; j<=22 ;j++){
             int n = pow(2,i);
             if(pow(2,j) > n*(n-1)/2 ){
                 cout << "Nos pasamos del limite" << endl;
