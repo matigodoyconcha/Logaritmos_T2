@@ -38,9 +38,9 @@ int main(){
                 vector<vector<NodoDist>> graph = graphGen(i, j);
                 //cout << "Grafo generado" << endl;
                 //cout << "Fibonacci" << endl;
-                Fibonacci_Test(graph,i,j,f);
                 //cout << "Heap" << endl;
                 Heap_Test(graph,i,j,h);
+                Fibonacci_Test(graph,i,j,f);
                 //cout << "Dijkstra ejecutado" << endl;
             }
             coutMean(h);
@@ -53,19 +53,20 @@ int main(){
 };
 
 /* int main(){
-    cola_fibonacci *cola = new cola_fibonacci();
+    cola_fibonacci *cola = new cola_fibonacci(pow(2,14));
     Heap *heap = new Heap();
-    vector<vector<NodoDist>> graph = graphGen(10, 16);
+    vector<vector<NodoDist>> graph = graphGen(14, 22);
     cout << "Heap:" << endl;
-    tuple <vector<double>, vector<ull>> res = Dijkstra(1024, graph, *heap, 0);
+    tuple <vector<double>, vector<ull>> res = Dijkstra(pow(2,14), graph, *heap,  0);
     cout << "Fibonacci:" << endl;
-    tuple <vector<double>, vector<ull>> res2 = Dijkstra(1024, graph, *cola, 0);
+    tuple <vector<double>, vector<ull>> res2 = Dijkstra(pow(2,14), graph, *cola, 0);
     for (int i = 0; i < 1024; i++){
         if (get<0>(res)[i] != get<0>(res2)[i]){
-            cout << "Error en " << i << endl;
+            cout << "Error en distancia " << i << endl;
+            cout << get<0>(res)[i] << " " << get<0>(res2)[i] << endl;
         }
         if (get<1>(res)[i] != get<1>(res2)[i]){
-            cout << "Error en " << i << endl;
+            cout << "Error en previo" << i << endl;
         }
     }
     return 0;

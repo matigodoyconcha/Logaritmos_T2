@@ -10,41 +10,55 @@ class node{
         int degree = 0;
         bool mark = false;
         node *child, *parent, *prev, *next;
+
+        node(){
+            child = nullptr;
+            parent = nullptr;
+            prev = nullptr;
+            next = nullptr;
+            mark = false;
+        }
 };
-
-// Insert a node into a double linked list
-void insert(node *listToInsert, node *nodeToInsert){
-    node *temp = listToInsert->prev;
-    nodeToInsert->next = listToInsert;
-    nodeToInsert->prev = temp;
-    listToInsert->prev = nodeToInsert;
-    temp->next = nodeToInsert;
-}
-
-// Erase a node from his double linked list
-void erase(node *nodeToEliminate){
-        nodeToEliminate->prev->next = nodeToEliminate->next;
-        nodeToEliminate->next->prev = nodeToEliminate->prev;
-    }
 
 class cola_fibonacci : public Estructura{
     public:
-        vector<NodoDist> heap;
         vector<node *> nodes;
-        node *min = NULL;
+        node *min = nullptr;
         int n = 0;
-        node raiz;
-        node *toFree;
 
+        cola_fibonacci(int size){
+            nodes = vector<node *>(size);
+        }
+
+        // Erase a node from his double linked list
+        void erase(node *nodeToEliminate){
+            nodeToEliminate->prev->next = nodeToEliminate->next;
+            nodeToEliminate->next->prev = nodeToEliminate->prev;
+        }
+
+        
+        // Insert a node into a double linked list
+        void insert(node *listToInsert, node *nodeToInsert){
+            node *temp = listToInsert->prev;
+            nodeToInsert->next = listToInsert;
+            nodeToInsert->prev = temp;
+            listToInsert->prev = nodeToInsert;
+            temp->next = nodeToInsert;
+        }
         // Push a node into an array waiting to be inserted into the fibonacci heap
         void push(NodoDist nodo) override {
-            heap.push_back(nodo);
+            node *temp = (node *)malloc(sizeof(node));
+            *temp = node();
+            temp->key = nodo.weight;
+            temp->data = nodo;
+            nodes[nodo.neighbor] = temp;
             n++;
+            insertInHeap(temp);
         }
 
         // Insert a node into the fibonacci heap
         void insertInHeap(node *nodeToInsert){
-            if (min == NULL){
+            if (min == nullptr){
                 nodeToInsert->prev = nodeToInsert;
                 nodeToInsert->next = nodeToInsert;
                 min = nodeToInsert;
@@ -59,10 +73,10 @@ class cola_fibonacci : public Estructura{
 
         // Make the union of two fibonacci heaps into just this one
         void Union(cola_fibonacci *H2){
-            if (H2->min == NULL){
+            if (H2->min == nullptr){
                 return;
             }
-            if (min == NULL){
+            if (min == nullptr){
                 min = H2->min;
                 n = H2->n;
                 return;
@@ -81,24 +95,24 @@ class cola_fibonacci : public Estructura{
 
         // Returns true if the heap is empty
         int empty() override{
-            return min == NULL;
+            return min == nullptr;
         }
 
         // Returns the minimum node of the heap
         NodoDist pop() override{
             node *z = min;
             node *temp, *x;
-            if (z != NULL){
+            if (z != nullptr){
                 x = z->child;
                     for (int i = 0; i <z->degree; i++){
                         temp = x->next;
                         insertInHeap(x);
-                        x->parent = NULL;
+                        x->parent = nullptr;
                         x = temp;
                     }
                 erase(z);
                 if (z == z->next){
-                    min = NULL;
+                    min = nullptr;
                 }
                 else{
                     min = z->next;
@@ -107,6 +121,8 @@ class cola_fibonacci : public Estructura{
                 n--;
             }
             NodoDist toReturn = z->data;
+            free(z);
+            nodes[toReturn.neighbor] = nullptr;
             return toReturn;
         }
 
@@ -114,7 +130,7 @@ class cola_fibonacci : public Estructura{
         void consolidate(){
             double phi = (1 + sqrt(5)) / 2;
             int top = log(n)/log(phi);
-            vector<node*> A(top, NULL);
+            vector<node*> A(top, nullptr);
             node *x = min;
             node *next;
             node *y;
@@ -129,7 +145,7 @@ class cola_fibonacci : public Estructura{
             for (int i = 0; i < InHeap; i++){
                 next = x->next;
                 d = x->degree;
-                while (A[d] != NULL){
+                while (A[d] != nullptr){
                     y = A[d];
                     if (x->key > y->key){
                         temp = x;
@@ -137,16 +153,16 @@ class cola_fibonacci : public Estructura{
                         y = temp;
                     }
                     heap_link(y, x);
-                    A[d] = NULL;
+                    A[d] = nullptr;
                     d++;
                 }
                 A[d] = x;
                 x = next;
             }
-            min = NULL;
+            min = nullptr;
             for (int i = 0; i < top; i++){
-                if (A[i] != NULL){
-                    if (min == NULL){
+                if (A[i] != nullptr){
+                    if (min == nullptr){
                         min = A[i];
                         min->prev = min;
                         min->next = min;
@@ -164,7 +180,7 @@ class cola_fibonacci : public Estructura{
         // Make node y the child of node x
         void heap_link(node *y, node *x){
             erase(y);
-            if (x->child == NULL){
+            if (x->child == nullptr){
                 x->child = y;
                 y->prev = y;
                 y->next = y;
@@ -180,28 +196,18 @@ class cola_fibonacci : public Estructura{
 
         // Convert the array into a fibonacci heap
         void heapify() override{
-            nodes.resize(n);
-            node *locura = new node[n];
-            toFree = locura;
-            for (int i = 0; i < n; i++){
-                locura[i] = node();
-                locura[i].key = heap[i].weight;
-                locura[i].data = heap[i];
-                nodes[heap[i].neighbor] = locura;
-                insertInHeap(&locura[i]);
-            }
         }
 
         // Decrease the key of a node
         void decreaseKey(ull nodo, double newDistance) override{
             node *x = nodes[nodo];
-            if (newDistance > x->key){
+            if (x->key < newDistance){
                 return;
             }
             x->key = newDistance;
             x->data.weight = newDistance;
             node *y = x->parent;
-            if (y != NULL && x->key < y->key){
+            if (y != nullptr && x->key < y->key){
                 cut(x, y);
                 cascading_cut(y);
             }
@@ -214,7 +220,7 @@ class cola_fibonacci : public Estructura{
         void cut(node *x, node *y){
             y->degree--; 
             if (y->degree == 0){
-                y->child = NULL;
+                y->child = nullptr;
             } else {
                 if (y->child == x){
                     y->child = x->next;
@@ -222,18 +228,17 @@ class cola_fibonacci : public Estructura{
                 erase(x);
             }
             insertInHeap(x);
-            x->parent = NULL;
+            x->parent = nullptr;
             x->mark = false;
         }
 
         // Cut a node from his parent and make the parent the child of the root
         void cascading_cut(node *y){
             node *z = y->parent;
-            if (z != NULL){
+            if (z != nullptr){
                 if (y->mark == false){
                     y->mark = true;
-                }
-                else{
+                } else{
                     cut(y, z);
                     cascading_cut(z);
                 }

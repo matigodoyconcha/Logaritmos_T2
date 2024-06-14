@@ -25,9 +25,6 @@ vector<vector<NodoDist>> graphGen(ull i, ull j) {
         matrix[k].resize(n,0);
     }
     vector<vector<NodoDist>> graph(n);
-    for (ull a = 0; a < n; a++) {
-        graph[a].resize(n);
-    }
 
     // Agregar v - 1 aristas para formar un árbol cobertor
     for (ull a = 1; a < n; a++) {
