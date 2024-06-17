@@ -25,10 +25,7 @@ class cola_fibonacci : public Estructura{
         vector<node *> nodes;
         node *min = nullptr;
         int n = 0;
-
-        cola_fibonacci(int size){
-            nodes = vector<node *>(size);
-        }
+        double phi = (1 + sqrt(5)) / 2;
 
         // Erase a node from his double linked list
         void erase(node *nodeToEliminate){
@@ -47,6 +44,9 @@ class cola_fibonacci : public Estructura{
         }
         // Push a node into an array waiting to be inserted into the fibonacci heap
         void push(NodoDist nodo) override {
+            if (nodo.neighbor >= nodes.size()){
+                nodes.resize(nodo.neighbor + 1);
+            }
             node *temp = (node *)malloc(sizeof(node));
             *temp = node();
             temp->key = nodo.weight;
@@ -121,15 +121,14 @@ class cola_fibonacci : public Estructura{
                 n--;
             }
             NodoDist toReturn = z->data;
-            free(z);
             nodes[toReturn.neighbor] = nullptr;
+            free(z);
             return toReturn;
         }
 
         // Consolidate the fibonacci heap to just have one heap with each degree
         void consolidate(){
-            double phi = (1 + sqrt(5)) / 2;
-            int top = log(n)/log(phi);
+            int top = log(n)/log(phi) + 1;
             vector<node*> A(top, nullptr);
             node *x = min;
             node *next;
@@ -169,9 +168,6 @@ class cola_fibonacci : public Estructura{
                     }
                     else{
                         insertInHeap(A[i]);
-                        if (A[i]->key < min->key){
-                            min = A[i];
-                        }
                     }
                 }
             }
@@ -201,6 +197,9 @@ class cola_fibonacci : public Estructura{
         // Decrease the key of a node
         void decreaseKey(ull nodo, double newDistance) override{
             node *x = nodes[nodo];
+            if (x == nullptr){
+                return;
+            }
             if (x->key < newDistance){
                 return;
             }
@@ -210,9 +209,6 @@ class cola_fibonacci : public Estructura{
             if (y != nullptr && x->key < y->key){
                 cut(x, y);
                 cascading_cut(y);
-            }
-            if (x->key < min->key){
-                min = x;
             }
         }
 

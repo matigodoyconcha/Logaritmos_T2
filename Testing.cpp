@@ -25,7 +25,7 @@ void Heap_Test(vector<vector<NodoDist>>& graph, int i, int j, const string& file
 
 void Fibonacci_Test(vector<vector<NodoDist>>& graph, int i, int j, const string& filename){
     ofstream outfile("Testing/"+ filename + ".txt", ios::app);
-    cola_fibonacci *cola = new cola_fibonacci(pow(2,i));
+    Estructura *cola = new cola_fibonacci();
     auto start = high_resolution_clock::now();
     tuple<vector<double>, vector<ull>> res = Dijkstra(pow(2,i), graph, *cola, 0);
     auto end = high_resolution_clock::now();
