@@ -10,7 +10,7 @@ Integrantes:
 
 Debe exitir una carpeta llamada Testing, donde se almacenarán los resultados de la experimentación.
 
-Usando un compilador de c++ como g++ se necesita compilar el archivo experiment.cpp que contiene el main junto con las importaciones de todos los otros archivos cpp necesarios. Para esto se puede ejecutar el comando:
+Usando un compilador de c++ como g++ se necesita compilar el archivo main.cpp que contiene la función main junto con las importaciones de todos los otros archivos cpp necesarios. Para esto se puede ejecutar el comando:
 
 ```
 g++ main.cpp -o ejecutable
