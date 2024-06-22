@@ -20,8 +20,9 @@ Para ejecutar ahora el archivo se necesita usar:
 ```
 ./ejecutable
 ```
-Este programa, al ejecutarse, correrá 50 veces cada algoritmo con el mismo grafo con los i= [10,12,14] y j=[16,...,22] únicamente si es que la cantida de aristas se pueden realizar en la cantidad de nodos.
+Este programa, al ejecutarse, correrá 50 veces cada algoritmo con el mismo grafo con los i= [10,12,14] y j=[16,...,22] únicamente si es que la cantidad de aristas se pueden realizar en la cantidad de nodos.
 
+Los archivos de texto con los resultados apareceran en la carpeta Testing, por lo que podria ser necesario crear esta carpeta a mano en el directorio donde se encuentra el código para que sean generados correctamente.
 
 ### Resultados
 
