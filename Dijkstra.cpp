@@ -40,10 +40,10 @@ tuple<vector<double>,vector<ull>> Dijkstra(ull V ,vector<vector<NodoDist>> &Aris
         //Parte 6.b
         for(NodoDist &vecino : Aristas[v]){
             ull u = vecino.neighbor;
-            if(distancias[u]> distancias[v]+ vecino.weight){
-                distancias[u] = distancias[v]+ vecino.weight;
+            if (distancias[u] > distancias[v] + vecino.weight){
+                distancias[u] = distancias[v] + vecino.weight;
                 previos[u] = v;
-                Q.decreaseKey(u,distancias[v] + vecino.weight);	
+                Q.decreaseKey(u,distancias[u]);	
             }
         }
     }

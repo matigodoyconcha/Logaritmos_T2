@@ -33,5 +33,4 @@ void Fibonacci_Test(vector<vector<NodoDist>>& graph, int i, int j, const string&
     outfile << duration << endl;
     delete cola;
     outfile.close();
-
 }

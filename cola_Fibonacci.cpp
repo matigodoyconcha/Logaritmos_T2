@@ -3,21 +3,12 @@
 
 using namespace std;
 
-class node{
-    public:
+struct node{
         double key;
         NodoDist data;
-        int degree = 0;
-        bool mark = false;
+        int degree;
+        bool mark;
         node *child, *parent, *prev, *next;
-
-        node(){
-            child = nullptr;
-            parent = nullptr;
-            prev = nullptr;
-            next = nullptr;
-            mark = false;
-        }
 };
 
 class cola_fibonacci : public Estructura{
@@ -25,7 +16,6 @@ class cola_fibonacci : public Estructura{
         vector<node *> nodes;
         node *min = nullptr;
         int n = 0;
-        double phi = (1 + sqrt(5)) / 2;
 
         // Erase a node from his double linked list
         void erase(node *nodeToEliminate){
@@ -33,7 +23,6 @@ class cola_fibonacci : public Estructura{
             nodeToEliminate->next->prev = nodeToEliminate->prev;
         }
 
-        
         // Insert a node into a double linked list
         void insert(node *listToInsert, node *nodeToInsert){
             node *temp = listToInsert->prev;
@@ -47,10 +36,15 @@ class cola_fibonacci : public Estructura{
             if (nodo.neighbor >= nodes.size()){
                 nodes.resize(nodo.neighbor + 1);
             }
-            node *temp = (node *)malloc(sizeof(node));
-            *temp = node();
+            node *temp = new node();
             temp->key = nodo.weight;
             temp->data = nodo;
+            temp->degree = 0;
+            temp->mark = false;
+            temp->child = nullptr;
+            temp->parent = nullptr;
+            temp->prev = nullptr;
+            temp->next = nullptr;
             nodes[nodo.neighbor] = temp;
             n++;
             insertInHeap(temp);
@@ -58,6 +52,8 @@ class cola_fibonacci : public Estructura{
 
         // Insert a node into the fibonacci heap
         void insertInHeap(node *nodeToInsert){
+            nodeToInsert->mark = false;
+            nodeToInsert->parent = nullptr;
             if (min == nullptr){
                 nodeToInsert->prev = nodeToInsert;
                 nodeToInsert->next = nodeToInsert;
@@ -70,29 +66,7 @@ class cola_fibonacci : public Estructura{
                 }
             }
         }
-
-        // Make the union of two fibonacci heaps into just this one
-        void Union(cola_fibonacci *H2){
-            if (H2->min == nullptr){
-                return;
-            }
-            if (min == nullptr){
-                min = H2->min;
-                n = H2->n;
-                return;
-            }
-            node *temp1 = min->next;
-            node *temp2 = H2->min->prev;
-            min->next = H2->min;
-            H2->min->prev = min;
-            temp2->next = temp1;
-            temp1->prev = temp2;
-            if (H2->min->key < min->key){
-                min = H2->min;
-            }
-            n += H2->n;
-        }
-
+        
         // Returns true if the heap is empty
         int empty() override{
             return min == nullptr;
@@ -104,12 +78,12 @@ class cola_fibonacci : public Estructura{
             node *temp, *x;
             if (z != nullptr){
                 x = z->child;
-                    for (int i = 0; i <z->degree; i++){
-                        temp = x->next;
-                        insertInHeap(x);
-                        x->parent = nullptr;
-                        x = temp;
-                    }
+                for (int i = 0; i <z->degree; i++){
+                    temp = x->next;
+                    insertInHeap(x);
+                    x->parent = nullptr;
+                    x = temp;
+                }
                 erase(z);
                 if (z == z->next){
                     min = nullptr;
@@ -120,14 +94,12 @@ class cola_fibonacci : public Estructura{
                 }
                 n--;
             }
-            NodoDist toReturn = z->data;
-            nodes[toReturn.neighbor] = nullptr;
-            free(z);
-            return toReturn;
+            return z->data;
         }
 
         // Consolidate the fibonacci heap to just have one heap with each degree
         void consolidate(){
+            double phi = (1 + sqrt(5))/2;
             int top = log(n)/log(phi) + 1;
             vector<node*> A(top, nullptr);
             node *x = min;
@@ -180,12 +152,11 @@ class cola_fibonacci : public Estructura{
                 x->child = y;
                 y->prev = y;
                 y->next = y;
-                y->parent = x;
             }
             else{
                 insert(x->child, y);
-                y->parent = x;
             }
+            y->parent = x;
             y->mark = false;
             x->degree++;
         }
@@ -197,9 +168,6 @@ class cola_fibonacci : public Estructura{
         // Decrease the key of a node
         void decreaseKey(ull nodo, double newDistance) override{
             node *x = nodes[nodo];
-            if (x == nullptr){
-                return;
-            }
             if (x->key < newDistance){
                 return;
             }
@@ -214,7 +182,7 @@ class cola_fibonacci : public Estructura{
 
         // Cut a node from his parent
         void cut(node *x, node *y){
-            y->degree--; 
+            y->degree--;
             if (y->degree == 0){
                 y->child = nullptr;
             } else {
@@ -224,8 +192,6 @@ class cola_fibonacci : public Estructura{
                 erase(x);
             }
             insertInHeap(x);
-            x->parent = nullptr;
-            x->mark = false;
         }
 
         // Cut a node from his parent and make the parent the child of the root
